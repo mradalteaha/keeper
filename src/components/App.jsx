@@ -3,6 +3,7 @@ import Heading from "./Heading";
 import Footer from "./Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
+import { noteRef } from "../firebase";
 
 function App() {
 
@@ -13,6 +14,7 @@ function App() {
         setNotes(prevNote => {
            return [...prevNote,note]
         });
+       noteRef.push(note);
     }
 
     function deleteNote(id){ //deleting from the array
