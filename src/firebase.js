@@ -1,5 +1,5 @@
-import firebase from './firebase'
-import 'firebase/database'
+import {initializeApp} from 'firebase/app'
+import { getDatabase , ref } from "firebase/database";
 
 var firebaseConfig = {
     apiKey: "AIzaSyBVCR38gCa-e3tZXdKzeAWrEA-vZyyJw3I",
@@ -11,9 +11,9 @@ var firebaseConfig = {
     appId: "1:663985771385:web:50d674081d4def1abf95a8",
     measurementId: "G-FDSRQ45SSR"
   };
-  firebase.initializeApp(firebaseConfig)
 
-  const databaseRef = firebase.database().ref()
-  export default firebase ;
-  export const noteRef = databaseRef.child("notes");
+  const firebase = initializeApp(firebaseConfig)
+  export const databaseRef = ref(getDatabase(firebase));
  
+  export default firebase;
+  
