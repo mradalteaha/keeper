@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import './SignIn.css'
 import { databaseRef } from "../../firebase";
-import { child,onValue} from 'firebase/database'
+import { child,get,onValue} from 'firebase/database'
 const accRef = child(databaseRef,"Accounts");
 
 function SignIn(props){
@@ -12,7 +12,7 @@ function SignIn(props){
         ,userID : ''
     }) 
     
-    const [foundUser , foundUserUpdate]  = useState(false);
+    
     
     function passPa(){
         console.log("pass pa has been called")
@@ -27,40 +27,40 @@ function SignIn(props){
         }
         console.log("sign in button triggered")
 
-        console.log(Account)
+     
 
-         onValue(accRef,  (snapshot) => {
-            snapshot.forEach((childSnapshot) => {
-              const childKey  = childSnapshot.key
-              const childData = childSnapshot.val();
+        if(Account.username !==''){
+             get(child(databaseRef, `Accounts/${Account.username}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+
+              const childKey  = snapshot.key
+              const childData = snapshot.val();
               if (childData.username === Account.username && childData.password === Account.password){
+                 // valid account 
+                
                 console.log("found User")
-                foundUserUpdate(true)
                 setUsername({
                     username:childData.username
                     ,password : childData.password
                     ,userID : childKey
                 })
 
+                passPa()
+
               }
-              
-          
-            });
-          }, {
-            onlyOnce: true
-          })
 
-
-          console.log(foundUser);
-          if(!foundUser){
-            console.log("user doesn't exist")
-            
-          }
-          else{
-            console.log("user exist")
-            passPa();
-            
+            } else {
+              alert("user doesn't exist")
+            }
+          }).catch((error) => {
+            console.error(error);
+          });
         }
+
+       
+
+
+
     
 
         event.preventDefault();
@@ -72,12 +72,12 @@ function SignIn(props){
         <div>
 
         <h1> Sign In</h1>
-        <form onSubmit = {handleClick } >
+        <form onSubmit = { handleClick } >
        
             <input 
              id='username'
              name= "username"
-            type="text" placeholder="UserName" ></input>
+            type="text" placeholder="UserName"></input>
             <input 
              id='password'
              name= "password"

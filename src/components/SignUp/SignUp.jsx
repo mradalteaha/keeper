@@ -1,14 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './SignUp.css'
 import { databaseRef } from "../../firebase";
-import { child,push,onValue} from 'firebase/database'
+import { child,set,get} from 'firebase/database'
 
 const accRef = child(databaseRef,"Accounts");
 
 function SignUp(){
-
-
-  const [existUser , existUserUpdate]=useState(true)
     
     function handleClick(event){ //getting the element out of the form 
         
@@ -20,38 +17,30 @@ function SignUp(){
             ,password:document.getElementById("password").value
         }
 
-
-        console.log("sign up button triggered")
-        console.log(Account)
-
-        onValue(accRef,  (snapshot) => {
-            snapshot.forEach((childSnapshot) => {
-              const childKey  = childSnapshot.key
-              const childData = childSnapshot.val();
-              if (childData.username === Account.username){
-                alert("user Already Exist")
-               existUserUpdate(false)
-              }
-              
           
-            });
-          }, {
-            onlyOnce: true
+          get(child(databaseRef, `Accounts/${Account.username}`)).then((snapshot) => {
+            if (snapshot.exists()) {
+              alert("user Already Exist")
+               
+            } else {
+              let entry = child(accRef,Account.username);
+              set(entry , Account).then(() => {
+               // Data saved successfully!
+               
+               alert("Account Creates Successfully!");
+             })
+             .catch((error) => {
+               // The write failed...
+               alert("The write failed...")
+     
+             });
+            }
+          }).catch((error) => {
+            console.error(error);
           });
-       
-          if(existUser){
 
-             push(accRef , Account).then(() => {
-            // Data saved successfully!
-            
-            alert("Account Creates Successfully!");
-          })
-          .catch((error) => {
-            // The write failed...
-            alert("The write failed...")
-  
-          });
-          }
+       
+     
        
        
 
