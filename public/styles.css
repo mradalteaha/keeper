@@ -23,6 +23,16 @@ header h1 {
   color: #fff;
   font-family: "McLaren", cursive;
   font-weight: 200;
+  display: inline;
+}
+header button {
+  color: rgb(223, 8, 8);
+  font-family: "McLaren", cursive;
+  font-weight: 200;
+  display: inline;
+  position:relative;
+  margin-left: 60%;
+
 }
 
 footer {

@@ -12,7 +12,6 @@ const persistConfig = {
 }
 
 
-
 const persistedReducer = persistReducer(persistConfig,rootReducer)
 //Action
 const store = createStore(persistedReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())

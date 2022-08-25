@@ -45,9 +45,7 @@ function SignIn() {
                         }, {
                           onlyOnce: true
                         });
-                        console.log("loading Notes on sign in")
-                        console.log(loadingNotes)
-                        dispatch({ type: 'LOAD_NOTES', payload: loadingNotes})
+                      
                         dispatch({ type: 'SIGN_IN', payload: childData })
 
                       }

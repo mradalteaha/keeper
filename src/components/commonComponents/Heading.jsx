@@ -1,11 +1,14 @@
 import React from "react";
 import HighlightIcon from '@mui/icons-material/Highlight';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import Persistor from '../../store'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 
 
 function Heading(){
+
+    const Logged = useSelector( state => state.loggedReducer) ;
 
     const dispatch = useDispatch()
         function handleClick(){
@@ -13,13 +16,17 @@ function Heading(){
                 type:'USER_LOGOUT',
 
             })
-            Persistor.purge();
+            
         }
     return (<header>
+    <h1> <HighlightIcon/> Keeper  </h1>
+    {
+        Logged.isLogged ? 
+        <button 
+     onClick={handleClick}>LOG OUT <ExitToAppIcon/></button> :''
+    }  
+     
     
-    <h1> <HighlightIcon/> Keeper </h1>  
-    <button 
-     onClick={handleClick}>lOG OUT</button>
     </header>)
 }
 

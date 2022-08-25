@@ -1,14 +1,15 @@
+let initialState =  { items: [] } 
 
-
-const noteReducer = (state = [] , action ) => {
+const noteReducer = (state = initialState , action ) => {
     switch (action.type) {
         case 'LOAD_NOTES': {
-            console.log("inside loading notes reducer")
-            console.log(action)
-            let newState = [...state , action.payload]
-           
+        
+            let newState =  { 
+                ...state,
+                items:[...state.items, action.payload.Notes]
+           }
             
-            console.log("the new state of notes")
+        
         console.log(newState)
         return newState
     } 

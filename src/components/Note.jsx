@@ -1,6 +1,5 @@
 import React from "react";
-import DeleteIcon from '@mui/icons-material/Delete';
-
+import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 
 
 
@@ -9,6 +8,7 @@ function Note(props){
     function deleteMe(){
         props.onDelete(props.id)
     }
+ 
 return (
     <div className="note">
 <h1>
@@ -17,7 +17,8 @@ return (
 <p>
     {props.content}
 </p>
-      <button onClick={deleteMe}>{<DeleteIcon/>}</button>
+<button onClick={deleteMe}>{<DeleteSweepIcon style={{'color':'black'}}/>}</button>
+       
 
 </div>)
 }

@@ -9,15 +9,6 @@ const reducers = combineReducers({
 })
 
 const rootReducer = (state , action ) => {
-
-
-
-    if (action.type === 'USER_LOGOUT') {
-
-        window.location.reload()
-        storage.removeItem('persist:root')
-        return reducers(undefined, action)
-      }
     return reducers(state,action);
 } 
 
