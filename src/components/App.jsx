@@ -7,7 +7,7 @@ import { databaseRef } from "../firebase";
 import { child, push, get } from "firebase/database";
 import SignInUpForm from "./SignInUpForm/SignInUpForm";
 import {useSelector} from 'react-redux'
-
+import firebase from "../firebase";
 const noteRef = child(databaseRef, "notes");
 //const accRef = child(databaseRef, "Accounts");
 
@@ -17,10 +17,15 @@ function App() {
 
   const Logged = useSelector( state => state.loggedReducer) ;
 
-  console.log(Logged)
 
-  const [notes, setNotes] = useState([])
- 
+
+
+
+   const loadedNotes = useSelector( state => state.noteReducer)
+   let test = loadedNotes[0]
+  console.log("loaded Notes")
+  console.log(test)
+  const [notes, setNotes] = useState(loadedNotes[0])
 
 
   /* failed to load notes will try another way using redux
@@ -51,7 +56,11 @@ function App() {
       content: note.content
     }
 
-    push(noteRef, item).then(() => {
+    const accReference = child(databaseRef, `Accounts/${Logged.loggedUserName}/Notes`);
+
+    
+
+    push(accReference, item).then(() => {
       // Data saved successfully!
       console.log("Data saved successfully!")
     })
@@ -60,6 +69,7 @@ function App() {
         console.log("The write failed...")
 
       });
+      
     setNotes(prevNote => {
       return [...prevNote, note]
     })
