@@ -1,26 +1,29 @@
 import React, { useState } from "react";
-import Heading from "./Heading";
-import Footer from "./Footer";
+import Heading from "../components/commonComponents/Heading";
+import Footer from "../components/commonComponents/Footer";
 import Note from "./Note";
 import CreateArea from "./CreateArea";
 import { databaseRef } from "../firebase";
-import { child, push, onValue, get } from "firebase/database";
+import { child, push, get } from "firebase/database";
 import SignInUpForm from "./SignInUpForm/SignInUpForm";
+import {useSelector} from 'react-redux'
 
 const noteRef = child(databaseRef, "notes");
-const accRef = child(databaseRef, "Accounts");
+//const accRef = child(databaseRef, "Accounts");
 
 
 
 function App() {
 
-  let intitNote = []
+  const Logged = useSelector( state => state.loggedReducer) ;
+
+  console.log(Logged)
 
   const [notes, setNotes] = useState([])
-  const [isSignIn, setSignIn] = useState(false)
-  const [account, setUsername] = useState(null)
+ 
 
-  console.log("on value function :");
+
+  /* failed to load notes will try another way using redux
 
   onValue(noteRef, (snapshot) => {
     snapshot.forEach((childSnapshot) => {
@@ -37,6 +40,7 @@ function App() {
   }, {
     onlyOnce: true
   });
+  */
 
 
 
@@ -65,7 +69,7 @@ function App() {
 
 
 
-  function getSignedUser(Account) {
+  function getSignedUser(Account) { // this function is heelp function to pass params
     console.log("get Signed user got called")
 
     if (Account.username !== '') {
@@ -73,7 +77,7 @@ function App() {
         if (snapshot.exists()) {
           console.log("found User in get signed User")
 
-          setSignIn(true)
+         
 
         } else {
           alert("user doesn't exist")
@@ -82,8 +86,6 @@ function App() {
         console.error(error);
       });
     }
-
-
 
   }
 
@@ -99,14 +101,14 @@ function App() {
   return (
     <div>
       <Heading />
-      {isSignIn ?
+      {Logged.isLogged ?
         <CreateArea onAdd={addNote} />
 
         : <SignInUpForm key={"SignInUpForm"} passPa={getSignedUser} />}
 
 
       {
-        isSignIn ?
+        Logged.isLogged ?
           notes.map((noteItem, index) => {
             return <Note onDelete={deleteNote} key={noteItem.key} id={index} title={noteItem.title} content={noteItem.content} />
           })

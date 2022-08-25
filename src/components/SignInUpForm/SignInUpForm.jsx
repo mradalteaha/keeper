@@ -2,7 +2,7 @@ import React, {  useState }  from 'react'
 import SignIn from '../SignIn/SignIn'
 import SignUp from '../SignUp/SignUp'
 
-function SignInUpForm(props){
+function SignInUpForm(){
     const[isSignIn , setSignIn]= useState(true)
  
   
@@ -15,7 +15,7 @@ function SignInUpForm(props){
 
     return (
        <div> {
-         isSignIn ? <SignIn key = {"SignIn"} passParam={getCurrentUser}/> : <SignUp/>
+         isSignIn ? <SignIn key = {"SignIn"} /> : <SignUp/>
     }
     <br></br>
     <form>

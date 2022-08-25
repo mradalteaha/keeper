@@ -1,100 +1,77 @@
-import React, { useState } from "react"
+import React from "react"
 import './SignIn.css'
 import { databaseRef } from "../../firebase";
-import { child,get,onValue} from 'firebase/database'
-const accRef = child(databaseRef,"Accounts");
+import { child, get } from 'firebase/database'
+import { useDispatch } from 'react-redux'
+//const accRef = child(databaseRef,"Accounts");
+function SignIn() {
 
-function SignIn(props){
 
-    const [account, setUsername] = useState({ // useState to fetch the account from the db
-        username:''
-        ,password : ''
-        ,userID : ''
-    }) 
-    
-    
-    
-    function passPa(){
-        console.log("pass pa has been called")
-        console.log(account)
-        props.passParam(account);
-    }
+  const dispatch = useDispatch();
 
-    function handleClick(event){ //getting the element out of the form 
-        var Account = {
-            username:document.getElementById("username").value
-            ,password:document.getElementById("password").value
-        }
-        console.log("sign in button triggered")
 
-     
 
-        if(Account.username !==''){
-             get(child(databaseRef, `Accounts/${Account.username}`)).then((snapshot) => {
-            if (snapshot.exists()) {
+        function handleClick(event) { //getting the element out of the form 
+          var Account = {
+            username: document.getElementById("username").value
+            , password: document.getElementById("password").value
+          }
+         
 
-              const childKey  = snapshot.key
-              const childData = snapshot.val();
-              if (childData.username === Account.username && childData.password === Account.password){
-                 // valid account 
-                
-                console.log("found User")
-                setUsername({
-                    username:childData.username
-                    ,password : childData.password
-                    ,userID : childKey
-                })
+                if (Account.username !== '') {
+                  get(child(databaseRef, `Accounts/${Account.username}`)).then((snapshot) => {
+                    if (snapshot.exists()) {
 
-                passPa()
+                     // const childKey = snapshot.key
+                      const childData = snapshot.val();
 
-              }
+                      if (childData.username === Account.username && childData.password === Account.password) {
+                        // valid account 
 
-            } else {
-              alert("user doesn't exist")
-            }
-          }).catch((error) => {
-            console.error(error);
-          });
+                        dispatch({ type: 'SIGN_IN', payload: childData })
+
+                      }
+
+                    } else {
+                      alert("user doesn't exist")
+                    }
+                  }).catch((error) => {
+                    console.error(error);
+                  })
+                }
+
+          event.preventDefault();
+
         }
 
-       
+
+  return (
+    <div>
+
+      <h1> Sign In</h1>
+      <form onSubmit={handleClick} >
+
+        <input
+          id='username'
+          name="username"
+          type="text" placeholder="UserName"></input>
+        <input
+          id='password'
+          name="password"
+          type="password" placeholder="PassWord"></input>
 
 
+        <br></br>
 
-    
-
-        event.preventDefault();
-
-    }
-
-
-    return (
-        <div>
-
-        <h1> Sign In</h1>
-        <form onSubmit = { handleClick } >
-       
-            <input 
-             id='username'
-             name= "username"
-            type="text" placeholder="UserName"></input>
-            <input 
-             id='password'
-             name= "password"
-            type="password" placeholder="PassWord"></input>
-     
-          
-          <br></br>
-            
         <button type="submit">Submit</button>
 
-        </form>
+      </form>
 
-        </div>
-    )
+    </div>
+  )
 
 }
 
 
 
-export default SignIn ;
+export default SignIn;
