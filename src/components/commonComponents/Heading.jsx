@@ -1,7 +1,6 @@
 import React from "react";
 import HighlightIcon from '@mui/icons-material/Highlight';
 import {useDispatch, useSelector} from 'react-redux'
-import Persistor from '../../store'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 
