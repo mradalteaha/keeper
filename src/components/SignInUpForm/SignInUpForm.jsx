@@ -13,15 +13,6 @@ function SignInUpForm(props){
     }
 
 
-    function getCurrentUser(id){
-        console.log("get Current User has been called")
-        
-        console.log(id)
-      
-        props.passPa(id)
-    }
-    
-
     return (
        <div> {
          isSignIn ? <SignIn key = {"SignIn"} passParam={getCurrentUser}/> : <SignUp/>
