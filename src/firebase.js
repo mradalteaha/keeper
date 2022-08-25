@@ -1,6 +1,7 @@
 import {initializeApp} from 'firebase/app'
 import { getDatabase , ref } from "firebase/database";
 
+
 var firebaseConfig = {
     apiKey: "AIzaSyBVCR38gCa-e3tZXdKzeAWrEA-vZyyJw3I",
     authDomain: "keeperapp-ffa8f.firebaseapp.com",
@@ -12,6 +13,7 @@ var firebaseConfig = {
     measurementId: "G-FDSRQ45SSR"
   };
 
+ 
   const firebase = initializeApp(firebaseConfig)
   export const databaseRef = ref(getDatabase(firebase));
  

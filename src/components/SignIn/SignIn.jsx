@@ -1,7 +1,7 @@
 import React from "react"
 import './SignIn.css'
 import { databaseRef } from "../../firebase";
-import { child, get } from 'firebase/database'
+import { child, get ,onValue } from 'firebase/database'
 import { useDispatch } from 'react-redux'
 //const accRef = child(databaseRef,"Accounts");
 function SignIn() {
@@ -27,7 +27,27 @@ function SignIn() {
 
                       if (childData.username === Account.username && childData.password === Account.password) {
                         // valid account 
+                        let loadingNotes = []
+                        const accReference = child(databaseRef, `Accounts/${Account.username}/Notes`);
 
+                        onValue(accReference, (snapshot) => {
+                          snapshot.forEach((childSnapshot) => {
+                            const childKey = childSnapshot.key
+                            const childData = childSnapshot.val();
+                            var temp = {
+                              key: childKey,
+                              title: childData.title
+                              , content: childData.content
+                            }
+                            loadingNotes.push(temp)
+                      
+                          });
+                        }, {
+                          onlyOnce: true
+                        });
+                        console.log("loading Notes on sign in")
+                        console.log(loadingNotes)
+                        dispatch({ type: 'LOAD_NOTES', payload: loadingNotes})
                         dispatch({ type: 'SIGN_IN', payload: childData })
 
                       }

@@ -1,6 +1,13 @@
 export const logIn = () =>{
     return {
         type : 'SIGN_IN',
-       action: {username :''}
+       
+    };
+};
+
+export const loadNote = () =>{
+    return {
+        type : 'LOAD_NOTES',
+       
     };
 };
